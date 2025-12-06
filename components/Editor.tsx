@@ -101,40 +101,8 @@ export function Editor({
         [yText, updateCharCount]
     );
 
-    // Immediate resize for growing (no flash) - only checks scrollHeight
-    const handleImmediateGrow = useCallback(() => {
-        const textarea = textareaRef.current;
-        if (textarea && !isTitle) {
-            // Only grow - this is instant and doesn't cause flash
-            if (textarea.scrollHeight > textarea.offsetHeight) {
-                // Get cursor position before resize
-                const cursorPosition = textarea.selectionStart;
-                const textBeforeCursor = textarea.value.substring(0, cursorPosition);
-                const linesBeforeCursor = textBeforeCursor.split('\n').length;
-
-                // Check if cursor is near the bottom (last 10 lines)
-                const totalLines = textarea.value.split('\n').length;
-                const isNearBottom = (totalLines - linesBeforeCursor) < 10;
-
-                // Resize the textarea
-                textarea.style.height = `${textarea.scrollHeight}px`;
-
-                // If typing near bottom, scroll to keep cursor visible
-                if (isNearBottom) {
-                    requestAnimationFrame(() => {
-                        // Scroll to bottom of page
-                        window.scrollTo({
-                            top: document.documentElement.scrollHeight - window.innerHeight,
-                            behavior: 'instant'
-                        });
-                    });
-                }
-            }
-        }
-    }, [isTitle]);
-
-    // Debounced resize for shrinking - runs after user stops typing
-    const handleDebouncedShrink = useCallback((skipScrollRestore = false) => {
+    // Simple resize handler - no scroll manipulation
+    const handleResize = useCallback(() => {
         const textarea = textareaRef.current;
         if (textarea && !isTitle) {
             // Clear any pending resize
@@ -142,36 +110,16 @@ export function Editor({
                 clearTimeout(resizeTimeoutRef.current);
             }
 
-            // Debounce the shrink calculation
+            // Debounce resize to avoid performance issues with large content
             resizeTimeoutRef.current = setTimeout(() => {
-                const scrollTop = window.scrollY;
-
-                // Temporarily set to auto to measure true scrollHeight
-                const originalHeight = textarea.style.height;
+                // Reset to auto to measure
                 textarea.style.height = 'auto';
+                // Set to scrollHeight (min 300px)
                 const newHeight = Math.max(textarea.scrollHeight, 300);
-
-                // Restore immediately if growing or same
-                if (newHeight >= textarea.offsetHeight) {
-                    textarea.style.height = `${newHeight}px`;
-                } else {
-                    // Shrink to new size
-                    textarea.style.height = `${newHeight}px`;
-                }
-
-                // Only restore scroll position if not pasting
-                if (!skipScrollRestore) {
-                    window.scrollTo(0, scrollTop);
-                }
-            }, 300); // 300ms debounce - runs after user stops typing
+                textarea.style.height = `${newHeight}px`;
+            }, 50);
         }
     }, [isTitle]);
-
-    // Combined handler
-    const handleResize = useCallback(() => {
-        handleImmediateGrow();
-        handleDebouncedShrink(false);
-    }, [handleImmediateGrow, handleDebouncedShrink]);
 
     // Handle paste - scroll to end of content after paste
     const handlePaste = useCallback(() => {
