@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import { createPortal } from "react-dom";
 import * as Y from "yjs";
 import { cn } from "@/lib/utils";
 
@@ -20,10 +21,13 @@ export function Editor({
     showCharCount = false,
 }: EditorProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const measureRef = useRef<HTMLDivElement>(null);
     const isUpdatingRef = useRef(false);
     const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [charCount, setCharCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
+    const [showScrollButton, setShowScrollButton] = useState(false);
+    const [showScrollTopButton, setShowScrollTopButton] = useState(false);
 
     // Update character count
     const updateCharCount = useCallback(() => {
@@ -101,42 +105,61 @@ export function Editor({
         [yText, updateCharCount]
     );
 
-    // Simple resize handler - avoids layout thrashing for large content
+    // Track last known height to detect when resize is needed
+    const lastHeightRef = useRef<number>(300);
+
+    // Resize handler - fully synchronous to prevent any scroll jumps
     const handleResize = useCallback(() => {
         const textarea = textareaRef.current;
-        if (textarea && !isTitle) {
+        const measureDiv = measureRef.current;
+        if (textarea && measureDiv && !isTitle) {
             // Clear any pending resize
             if (resizeTimeoutRef.current) {
                 clearTimeout(resizeTimeoutRef.current);
+                resizeTimeoutRef.current = null;
             }
 
-            // Debounce resize to avoid performance issues with large content
-            resizeTimeoutRef.current = setTimeout(() => {
-                const currentHeight = textarea.offsetHeight;
-                const scrollHeight = textarea.scrollHeight;
-                const minHeight = 300;
+            const currentHeight = textarea.offsetHeight;
+            const minHeight = 300;
 
-                // Only resize if content overflows OR textarea is much larger than needed
-                // For large content (>100K chars), avoid shrinking to prevent layout thrash
-                const contentLength = textarea.value.length;
-                const isLargeContent = contentLength > 100000;
+            // Copy content to hidden div to measure true height
+            measureDiv.textContent = textarea.value + '\n';
+            const contentHeight = measureDiv.scrollHeight;
+            const targetHeight = Math.max(contentHeight, minHeight);
 
-                if (scrollHeight > currentHeight) {
-                    // Content is larger than visible area - expand
-                    const newHeight = Math.max(scrollHeight, minHeight);
-                    textarea.style.height = `${newHeight}px`;
-                } else if (!isLargeContent && currentHeight > scrollHeight + 100) {
-                    // Content shrunk significantly and not large content - shrink textarea
-                    // Save scroll position before resize
-                    const scrollY = window.scrollY;
-                    textarea.style.height = 'auto';
-                    const newHeight = Math.max(textarea.scrollHeight, minHeight);
-                    textarea.style.height = `${newHeight}px`;
-                    // Restore scroll position
-                    window.scrollTo(0, scrollY);
+            // Only update if there's a meaningful difference
+            if (Math.abs(currentHeight - targetHeight) > 2) {
+                // Capture state RIGHT BEFORE making any DOM changes
+                const scrollYBefore = window.scrollY;
+                const selStart = textarea.selectionStart;
+                const selEnd = textarea.selectionEnd;
+                const isAtEnd = selEnd >= textarea.value.length - 5;
+                const isExpanding = targetHeight > currentHeight;
+                const heightDelta = targetHeight - currentHeight;
+
+                // Apply new height
+                textarea.style.height = `${targetHeight}px`;
+                lastHeightRef.current = targetHeight;
+
+                // IMMEDIATELY restore scroll position (no setTimeout, no RAF)
+                if (isExpanding) {
+                    if (isAtEnd) {
+                        // Typing at end - scroll down to show new content
+                        window.scrollTo(0, scrollYBefore + heightDelta);
+                    } else {
+                        // Typing in middle - keep viewport stable
+                        window.scrollTo(0, scrollYBefore);
+                    }
+                } else {
+                    // Shrinking - make sure we don't scroll past new document end
+                    const maxScroll = Math.max(0, document.body.scrollHeight - window.innerHeight);
+                    window.scrollTo(0, Math.min(scrollYBefore, maxScroll));
                 }
-                // For large content: don't shrink to avoid the height:auto flash
-            }, 50);
+
+                // Restore cursor
+                textarea.selectionStart = selStart;
+                textarea.selectionEnd = selEnd;
+            }
         }
     }, [isTitle]);
 
@@ -193,17 +216,61 @@ export function Editor({
         };
     }, []);
 
+    // Track scroll position to show/hide scroll-to-bottom button
     useEffect(() => {
+        if (isTitle) return;
+
+        const checkScrollPosition = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.body.scrollHeight;
+            const distanceFromBottom = documentHeight - (scrollY + windowHeight);
+
+            // Show scroll-to-bottom button if more than 150px from bottom and content is scrollable
+            const shouldShowBottom = distanceFromBottom > 150 && documentHeight > windowHeight + 50;
+            setShowScrollButton(shouldShowBottom);
+
+            // Show scroll-to-top button if scrolled more than 150px from top
+            const shouldShowTop = scrollY > 150 && documentHeight > windowHeight + 50;
+            setShowScrollTopButton(shouldShowTop);
+        };
+
+        // Check immediately and with delays for async content loading
+        checkScrollPosition();
+        const t1 = setTimeout(checkScrollPosition, 500);
+        const t2 = setTimeout(checkScrollPosition, 1500);
+
+        window.addEventListener('scroll', checkScrollPosition, { passive: true });
+        window.addEventListener('resize', checkScrollPosition, { passive: true });
+
+        return () => {
+            window.removeEventListener('scroll', checkScrollPosition);
+            window.removeEventListener('resize', checkScrollPosition);
+            clearTimeout(t1);
+            clearTimeout(t2);
+        };
+    }, [isTitle, charCount]); // Also re-run when content changes
+
+    useEffect(() => {
+        // Initial resize
         handleResize();
+
+        // Delayed resize calls for async data loading (IndexedDB, Yjs sync)
+        const timer1 = setTimeout(() => handleResize(), 100);
+        const timer2 = setTimeout(() => handleResize(), 500);
+        const timer3 = setTimeout(() => handleResize(), 1500);
+
         window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+            clearTimeout(timer3);
+        };
     }, [handleResize]);
 
     return (
-        <div className={cn(
-            "relative w-full transition-all duration-300",
-            isFocused && !isTitle && "ring-2 ring-primary-500/20 rounded-xl -m-2 p-2"
-        )}>
+        <div className="relative w-full">
             <textarea
                 ref={textareaRef}
                 onChange={handleChange}
@@ -231,6 +298,89 @@ export function Editor({
                     </span>
                     <span>{charCount === 1 ? "character" : "characters"}</span>
                 </div>
+            )}
+            {/* Hidden div for measuring content height without layout thrash */}
+            {!isTitle && (
+                <div
+                    ref={measureRef}
+                    aria-hidden="true"
+                    className={cn(
+                        "absolute top-0 left-0 w-full pointer-events-none invisible overflow-hidden",
+                        "text-base md:text-lg leading-relaxed whitespace-pre-wrap break-words",
+                        className
+                    )}
+                    style={{ minHeight: 300 }}
+                />
+            )}
+            {/* Scroll to bottom button - rendered via portal to avoid layout issues */}
+            {showScrollButton && !isTitle && typeof document !== 'undefined' && createPortal(
+                <button
+                    onClick={() => {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }}
+                    className={cn(
+                        "fixed bottom-6 right-6 z-50",
+                        "flex items-center justify-center",
+                        "w-12 h-12 rounded-full",
+                        "bg-gradient-to-r from-primary-500 to-purple-600",
+                        "text-white shadow-lg shadow-primary-500/30",
+                        "hover:shadow-xl hover:shadow-primary-500/40",
+                        "hover:scale-105 active:scale-95",
+                        "transition-all duration-200"
+                    )}
+                    aria-label="Scroll to bottom"
+                    title="Scroll to bottom"
+                >
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                        />
+                    </svg>
+                </button>,
+                document.body
+            )}
+            {/* Scroll to top button - rendered via portal to avoid layout issues */}
+            {showScrollTopButton && !isTitle && typeof document !== 'undefined' && createPortal(
+                <button
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={cn(
+                        "fixed bottom-6 right-20 z-50",
+                        "flex items-center justify-center",
+                        "w-12 h-12 rounded-full",
+                        "bg-gradient-to-r from-purple-600 to-primary-500",
+                        "text-white shadow-lg shadow-purple-500/30",
+                        "hover:shadow-xl hover:shadow-purple-500/40",
+                        "hover:scale-105 active:scale-95",
+                        "transition-all duration-200"
+                    )}
+                    aria-label="Scroll to top"
+                    title="Scroll to top"
+                >
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 10l7-7m0 0l7 7m-7-7v18"
+                        />
+                    </svg>
+                </button>,
+                document.body
             )}
         </div>
     );
