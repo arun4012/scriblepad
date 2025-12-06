@@ -105,9 +105,17 @@ export function Editor({
     const handleImmediateGrow = useCallback(() => {
         const textarea = textareaRef.current;
         if (textarea && !isTitle) {
+            // Save current scroll position
+            const scrollTop = window.scrollY;
+
             // Only grow - this is instant and doesn't cause flash
             if (textarea.scrollHeight > textarea.offsetHeight) {
                 textarea.style.height = `${textarea.scrollHeight}px`;
+
+                // Restore scroll position after resize to prevent jump
+                requestAnimationFrame(() => {
+                    window.scrollTo(0, scrollTop);
+                });
             }
         }
     }, [isTitle]);
