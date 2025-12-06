@@ -11,6 +11,7 @@ interface EditorProps {
     className?: string;
     isTitle?: boolean;
     showCharCount?: boolean;
+    maxLength?: number;
 }
 
 export function Editor({
@@ -19,20 +20,25 @@ export function Editor({
     className,
     isTitle = false,
     showCharCount = false,
+    maxLength,
 }: EditorProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
     const isUpdatingRef = useRef(false);
     const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [charCount, setCharCount] = useState(0);
+    const [wordCount, setWordCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [showScrollTopButton, setShowScrollTopButton] = useState(false);
 
-    // Update character count
+    // Update character and word count
     const updateCharCount = useCallback(() => {
-        const count = yText.toString().length;
-        setCharCount(count);
+        const text = yText.toString();
+        setCharCount(text.length);
+        // Count words (split by whitespace, filter empty strings)
+        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+        setWordCount(words.length);
     }, [yText]);
 
     // Sync Yjs text to textarea
@@ -80,8 +86,14 @@ export function Editor({
     // Handle local changes
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            const newValue = e.target.value;
+            let newValue = e.target.value;
             const oldValue = yText.toString();
+
+            // Enforce maxLength if specified
+            if (maxLength && newValue.length > maxLength) {
+                newValue = newValue.slice(0, maxLength);
+                e.target.value = newValue; // Update the textarea
+            }
 
             if (newValue === oldValue) return;
 
@@ -102,7 +114,7 @@ export function Editor({
             isUpdatingRef.current = false;
             updateCharCount();
         },
-        [yText, updateCharCount]
+        [yText, updateCharCount, maxLength]
     );
 
     // Track last known height to detect when resize is needed
@@ -292,11 +304,20 @@ export function Editor({
                 spellCheck="true"
             />
             {showCharCount && !isTitle && (
-                <div className="flex items-center justify-end gap-2 text-sm text-surface-700/50 dark:text-gray-500 mt-3 select-none">
-                    <span className="font-mono text-xs bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded-md">
-                        {charCount.toLocaleString()}
-                    </span>
-                    <span>{charCount === 1 ? "character" : "characters"}</span>
+                <div className="flex items-center justify-end gap-3 text-sm text-surface-700/50 dark:text-gray-500 mt-3 select-none">
+                    <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-xs bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded-md">
+                            {wordCount.toLocaleString()}
+                        </span>
+                        <span>{wordCount === 1 ? "word" : "words"}</span>
+                    </div>
+                    <span className="text-surface-300 dark:text-surface-600">·</span>
+                    <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-xs bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded-md">
+                            {charCount.toLocaleString()}
+                        </span>
+                        <span>{charCount === 1 ? "character" : "characters"}</span>
+                    </div>
                 </div>
             )}
             {/* Hidden div for measuring content height without layout thrash */}

@@ -36,7 +36,7 @@ export function Toast({
     return (
         <div
             className={cn(
-                "fixed bottom-6 right-6 z-50",
+                "fixed bottom-20 right-6 z-50",
                 "px-4 py-3 rounded-lg shadow-lg",
                 "flex items-center gap-3",
                 "transform transition-all duration-300",

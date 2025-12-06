@@ -201,6 +201,7 @@ export default function RoomPage() {
                         yText={yjsContext.titleText}
                         placeholder="Untitled Note"
                         isTitle
+                        maxLength={20}
                         className="mb-4"
                     />
 
