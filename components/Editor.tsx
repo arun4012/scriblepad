@@ -101,7 +101,7 @@ export function Editor({
         [yText, updateCharCount]
     );
 
-    // Simple resize handler - no scroll manipulation
+    // Simple resize handler - avoids layout thrashing for large content
     const handleResize = useCallback(() => {
         const textarea = textareaRef.current;
         if (textarea && !isTitle) {
@@ -112,11 +112,30 @@ export function Editor({
 
             // Debounce resize to avoid performance issues with large content
             resizeTimeoutRef.current = setTimeout(() => {
-                // Reset to auto to measure
-                textarea.style.height = 'auto';
-                // Set to scrollHeight (min 300px)
-                const newHeight = Math.max(textarea.scrollHeight, 300);
-                textarea.style.height = `${newHeight}px`;
+                const currentHeight = textarea.offsetHeight;
+                const scrollHeight = textarea.scrollHeight;
+                const minHeight = 300;
+
+                // Only resize if content overflows OR textarea is much larger than needed
+                // For large content (>100K chars), avoid shrinking to prevent layout thrash
+                const contentLength = textarea.value.length;
+                const isLargeContent = contentLength > 100000;
+
+                if (scrollHeight > currentHeight) {
+                    // Content is larger than visible area - expand
+                    const newHeight = Math.max(scrollHeight, minHeight);
+                    textarea.style.height = `${newHeight}px`;
+                } else if (!isLargeContent && currentHeight > scrollHeight + 100) {
+                    // Content shrunk significantly and not large content - shrink textarea
+                    // Save scroll position before resize
+                    const scrollY = window.scrollY;
+                    textarea.style.height = 'auto';
+                    const newHeight = Math.max(textarea.scrollHeight, minHeight);
+                    textarea.style.height = `${newHeight}px`;
+                    // Restore scroll position
+                    window.scrollTo(0, scrollY);
+                }
+                // For large content: don't shrink to avoid the height:auto flash
             }, 50);
         }
     }, [isTitle]);
