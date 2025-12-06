@@ -57,11 +57,11 @@ export default function RoomPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center ambient-bg">
                 <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-500 shadow-glow mb-6 animate-pulse">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 shadow-glow-lg mb-6 pulse-glow">
                         <svg
-                            className="w-8 h-8 text-white"
+                            className="w-10 h-10 text-white animate-pulse"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -74,10 +74,10 @@ export default function RoomPage() {
                             />
                         </svg>
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+                    <h2 className="text-xl md:text-2xl font-bold text-surface-900 dark:text-white mb-2">
                         Loading your pad...
                     </h2>
-                    <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-surface-700/70 dark:text-gray-400">
                         Connecting to collaborators
                     </p>
                 </div>
@@ -87,14 +87,14 @@ export default function RoomPage() {
 
     if (!yjsContext) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-xl font-semibold text-red-600 mb-4">
+            <div className="min-h-screen flex items-center justify-center ambient-bg">
+                <div className="text-center glass-card p-8 rounded-2xl">
+                    <h2 className="text-xl font-bold text-red-600 mb-4">
                         Failed to initialize
                     </h2>
                     <Link
                         href="/"
-                        className="text-primary-500 hover:underline"
+                        className="text-primary-500 hover:text-primary-600 font-medium transition-colors"
                     >
                         Go back home
                     </Link>
@@ -104,18 +104,18 @@ export default function RoomPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col page-enter">
+        <div className="min-h-screen flex flex-col page-enter ambient-bg">
             {/* Header */}
-            <header className="sticky top-0 z-40 backdrop-blur-md bg-white/70 dark:bg-slate-900/70 border-b border-gray-200/50 dark:border-gray-700/50">
-                <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <header className="sticky top-0 z-40 glass-header">
+                <div className="max-w-5xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between gap-4">
                     {/* Logo / Home Link */}
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                        className="flex items-center gap-2 text-surface-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors group"
                     >
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-md group-hover:shadow-glow transition-shadow">
                             <svg
-                                className="w-4 h-4 text-white"
+                                className="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -141,10 +141,12 @@ export default function RoomPage() {
                     <button
                         onClick={handleNewRoom}
                         className={cn(
-                            "inline-flex items-center gap-2 px-3 py-1.5",
-                            "text-sm font-medium text-gray-600 dark:text-gray-300",
+                            "inline-flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5",
+                            "text-sm font-semibold rounded-xl",
+                            "bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-gray-300",
+                            "hover:bg-primary-50 dark:hover:bg-primary-900/30",
                             "hover:text-primary-600 dark:hover:text-primary-400",
-                            "transition-colors"
+                            "transition-all duration-200 touch-target"
                         )}
                     >
                         <svg
@@ -160,7 +162,7 @@ export default function RoomPage() {
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
                         </svg>
-                        New
+                        <span className="hidden sm:inline">New Pad</span>
                     </button>
                 </div>
 
@@ -171,25 +173,29 @@ export default function RoomPage() {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+            <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 md:py-8">
                 {/* Sync Status Indicator */}
-                <div className="flex items-center gap-2 mb-6">
-                    <div
-                        className={cn(
-                            "w-2 h-2 rounded-full",
-                            isSynced ? "bg-green-500" : "bg-yellow-500 animate-pulse"
-                        )}
-                    />
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                        {isSynced ? "Synced" : "Syncing..."}
-                    </span>
-                    <span className="text-sm text-gray-400 dark:text-gray-500">
-                        · Room: {roomId}
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
+                        <div
+                            className={cn(
+                                "w-2.5 h-2.5 rounded-full",
+                                isSynced
+                                    ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"
+                                    : "bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.5)]"
+                            )}
+                        />
+                        <span className="text-sm font-medium text-surface-700 dark:text-gray-300">
+                            {isSynced ? "Synced" : "Syncing..."}
+                        </span>
+                    </div>
+                    <span className="text-sm text-surface-700/50 dark:text-gray-500 font-mono">
+                        {roomId}
                     </span>
                 </div>
 
                 {/* Editor Area */}
-                <div className="glass-card rounded-2xl p-6 md:p-8 mb-6 shadow-lg">
+                <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 mb-6 shadow-soft-lg">
                     {/* Title */}
                     <Editor
                         yText={yjsContext.titleText}
@@ -199,7 +205,7 @@ export default function RoomPage() {
                     />
 
                     {/* Divider */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent mb-6" />
+                    <div className="h-px bg-gradient-to-r from-transparent via-primary-300/50 dark:via-primary-600/30 to-transparent mb-6" />
 
                     {/* Content */}
                     <Editor
@@ -218,10 +224,10 @@ export default function RoomPage() {
             </main>
 
             {/* Footer */}
-            <footer className="py-4 text-center text-sm text-gray-400 dark:text-gray-500">
+            <footer className="py-5 text-center text-sm text-surface-700/50 dark:text-gray-500 safe-bottom">
                 <p>
                     Changes are saved automatically ·{" "}
-                    <Link href="/" className="text-primary-500 hover:underline">
+                    <Link href="/" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
                         Create new pad
                     </Link>
                 </p>

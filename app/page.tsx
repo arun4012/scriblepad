@@ -12,14 +12,19 @@ export default function HomePage() {
     };
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 page-enter">
+        <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 page-enter ambient-bg relative overflow-hidden">
+            {/* Decorative gradient orbs */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -z-10 animate-pulse-soft" />
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500/15 rounded-full blur-3xl -z-10 animate-pulse-soft" />
+            <div className="absolute top-1/2 left-0 w-72 h-72 bg-primary-400/10 rounded-full blur-3xl -z-10" />
+
             {/* Hero Section */}
-            <div className="text-center max-w-3xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto relative z-10">
                 {/* Logo */}
-                <div className="mb-8 float">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-glow">
+                <div className="mb-10 float">
+                    <div className="inline-flex items-center justify-center w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 shadow-glow-lg pulse-glow">
                         <svg
-                            className="w-10 h-10 text-white"
+                            className="w-12 h-12 md:w-14 md:h-14 text-white drop-shadow-lg"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -35,19 +40,19 @@ export default function HomePage() {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                <h1 className="text-responsive-xl font-extrabold mb-6 tracking-tight">
                     <span className="gradient-text">ScriblePad</span>
                 </h1>
 
                 {/* Tagline */}
-                <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 text-balance">
+                <p className="text-responsive-lg text-surface-700 dark:text-gray-300 mb-4 text-balance font-medium">
                     Real-time collaborative notes.{" "}
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">
+                    <span className="bg-gradient-to-r from-primary-600 to-purple-600 dark:from-primary-400 dark:to-purple-400 bg-clip-text text-transparent font-bold">
                         No login required.
                     </span>
                 </p>
 
-                <p className="text-lg text-gray-500 dark:text-gray-400 mb-12 max-w-xl mx-auto">
+                <p className="text-lg md:text-xl text-surface-700/70 dark:text-gray-400 mb-12 max-w-xl mx-auto leading-relaxed">
                     Create a pad, share the link, and start collaborating instantly.
                     Your notes sync in real-time with everyone who has the link.
                 </p>
@@ -55,10 +60,10 @@ export default function HomePage() {
                 {/* CTA Button */}
                 <button
                     onClick={handleCreatePad}
-                    className="group relative inline-flex items-center gap-3 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white text-lg font-semibold rounded-xl transition-all duration-300 hover-lift shadow-lg shadow-primary-500/30"
+                    className="group relative inline-flex items-center gap-3 px-8 py-4 md:px-10 md:py-5 text-white text-lg md:text-xl font-bold rounded-2xl transition-all duration-300 hover-lift btn-primary touch-target"
                 >
                     <svg
-                        className="w-6 h-6 transition-transform group-hover:rotate-12"
+                        className="w-6 h-6 md:w-7 md:h-7 transition-transform duration-300 group-hover:rotate-90"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -66,16 +71,15 @@ export default function HomePage() {
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            strokeWidth={2}
+                            strokeWidth={2.5}
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         />
                     </svg>
                     Create New Pad
-                    <div className="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
 
                 {/* Features */}
-                <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="mt-20 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     <FeatureCard
                         icon={
                             <svg
@@ -94,6 +98,7 @@ export default function HomePage() {
                         }
                         title="Real-time Sync"
                         description="Changes sync instantly between all connected users via P2P WebRTC."
+                        gradient="from-primary-500 to-purple-500"
                     />
                     <FeatureCard
                         icon={
@@ -113,6 +118,7 @@ export default function HomePage() {
                         }
                         title="Offline Support"
                         description="Notes are saved locally. Continue editing even without internet."
+                        gradient="from-accent-500 to-amber-500"
                     />
                     <FeatureCard
                         icon={
@@ -132,19 +138,20 @@ export default function HomePage() {
                         }
                         title="No Login Needed"
                         description="Just share the link. Anyone with the link can join and collaborate."
+                        gradient="from-emerald-500 to-teal-500"
                     />
                 </div>
             </div>
 
             {/* Footer */}
-            <footer className="mt-24 text-center text-sm text-gray-400 dark:text-gray-500">
+            <footer className="mt-24 text-center text-sm text-surface-700/50 dark:text-gray-500">
                 <p>
                     Built with 💜 using{" "}
                     <a
                         href="https://nextjs.org"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-500 hover:underline"
+                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
                     >
                         Next.js
                     </a>
@@ -153,7 +160,7 @@ export default function HomePage() {
                         href="https://yjs.dev"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-500 hover:underline"
+                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
                     >
                         Yjs
                     </a>
@@ -162,7 +169,7 @@ export default function HomePage() {
                         href="https://github.com/yjs/y-webrtc"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-500 hover:underline"
+                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
                     >
                         WebRTC
                     </a>
@@ -176,20 +183,22 @@ function FeatureCard({
     icon,
     title,
     description,
+    gradient,
 }: {
     icon: React.ReactNode;
     title: string;
     description: string;
+    gradient: string;
 }) {
     return (
-        <div className="glass-card p-6 rounded-2xl text-center hover:shadow-lg transition-shadow duration-300">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 mb-4">
+        <div className="glass-card feature-card p-6 md:p-8 rounded-2xl md:rounded-3xl text-center">
+            <div className={`inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${gradient} text-white mb-5 shadow-lg`}>
                 {icon}
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+            <h3 className="text-lg md:text-xl font-bold text-surface-900 dark:text-white mb-3">
                 {title}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">{description}</p>
+            <p className="text-surface-700/70 dark:text-gray-400 text-sm md:text-base leading-relaxed">{description}</p>
         </div>
     );
 }
