@@ -105,17 +105,30 @@ export function Editor({
     const handleImmediateGrow = useCallback(() => {
         const textarea = textareaRef.current;
         if (textarea && !isTitle) {
-            // Save current scroll position
-            const scrollTop = window.scrollY;
-
             // Only grow - this is instant and doesn't cause flash
             if (textarea.scrollHeight > textarea.offsetHeight) {
+                // Get cursor position before resize
+                const cursorPosition = textarea.selectionStart;
+                const textBeforeCursor = textarea.value.substring(0, cursorPosition);
+                const linesBeforeCursor = textBeforeCursor.split('\n').length;
+
+                // Check if cursor is near the bottom (last 10 lines)
+                const totalLines = textarea.value.split('\n').length;
+                const isNearBottom = (totalLines - linesBeforeCursor) < 10;
+
+                // Resize the textarea
                 textarea.style.height = `${textarea.scrollHeight}px`;
 
-                // Restore scroll position after resize to prevent jump
-                requestAnimationFrame(() => {
-                    window.scrollTo(0, scrollTop);
-                });
+                // If typing near bottom, scroll to keep cursor visible
+                if (isNearBottom) {
+                    requestAnimationFrame(() => {
+                        // Scroll to bottom of page
+                        window.scrollTo({
+                            top: document.documentElement.scrollHeight - window.innerHeight,
+                            behavior: 'instant'
+                        });
+                    });
+                }
             }
         }
     }, [isTitle]);
