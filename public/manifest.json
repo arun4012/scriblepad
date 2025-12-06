@@ -1,0 +1,16 @@
+{
+    "name": "ScriblePad",
+    "short_name": "ScriblePad",
+    "description": "Real-time collaborative notes app with P2P sync",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#6366f1",
+    "icons": [
+        {
+            "src": "/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
