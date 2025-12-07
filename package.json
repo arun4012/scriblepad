@@ -5,32 +5,38 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
+        "dev:party": "partykit dev",
+        "dev:all": "concurrently \"npm run dev\" \"npm run dev:party\"",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "party:deploy": "partykit deploy"
     },
     "dependencies": {
+        "clsx": "^2.1.1",
+        "nanoid": "^5.0.8",
         "next": "14.2.18",
+        "partykit": "^0.0.115",
+        "randomcolor": "^0.6.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "yjs": "^13.6.20",
-        "y-webrtc": "^10.3.0",
+        "tailwind-merge": "^2.5.4",
         "y-indexeddb": "^9.0.12",
-        "nanoid": "^5.0.8",
-        "randomcolor": "^0.6.2",
-        "clsx": "^2.1.1",
-        "tailwind-merge": "^2.5.4"
+        "y-partykit": "^0.0.33",
+        "y-webrtc": "^10.3.0",
+        "yjs": "^13.6.20"
     },
     "devDependencies": {
         "@types/node": "^22.10.1",
+        "@types/randomcolor": "^0.5.9",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
-        "@types/randomcolor": "^0.5.9",
-        "typescript": "^5.7.2",
-        "tailwindcss": "^3.4.15",
-        "postcss": "^8.4.49",
         "autoprefixer": "^10.4.20",
+        "concurrently": "^9.2.1",
         "eslint": "^8.57.1",
-        "eslint-config-next": "14.2.18"
+        "eslint-config-next": "14.2.18",
+        "postcss": "^8.4.49",
+        "tailwindcss": "^3.4.15",
+        "typescript": "^5.7.2"
     }
 }

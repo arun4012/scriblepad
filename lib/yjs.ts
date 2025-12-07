@@ -1,15 +1,21 @@
 import * as Y from "yjs";
-import { WebrtcProvider } from "y-webrtc";
+import YPartyKitProvider from "y-partykit/provider";
 import { IndexeddbPersistence } from "y-indexeddb";
 import type { UserIdentity } from "./identity";
 
+// PartyKit host - will be set after deployment
+// For local development, use localhost:1999
+// For production, use your-project.username.partykit.dev
+const PARTYKIT_HOST =
+    process.env.NEXT_PUBLIC_PARTYKIT_HOST || "localhost:1999";
+
 export interface YjsContext {
     doc: Y.Doc;
-    provider: WebrtcProvider;
+    provider: YPartyKitProvider;
     persistence: IndexeddbPersistence;
     titleText: Y.Text;
     contentText: Y.Text;
-    awareness: WebrtcProvider["awareness"];
+    awareness: YPartyKitProvider["awareness"];
     destroy: () => void;
 }
 
@@ -20,7 +26,7 @@ export interface AwarenessUser {
 }
 
 /**
- * Create a Yjs document with WebRTC provider and IndexedDB persistence
+ * Create a Yjs document with PartyKit provider and IndexedDB persistence
  */
 export function createYjsContext(
     roomId: string,
@@ -33,21 +39,12 @@ export function createYjsContext(
     const titleText = doc.getText("title");
     const contentText = doc.getText("content");
 
-    // Setup IndexedDB persistence for offline support
+    // Setup IndexedDB persistence for offline support (local cache)
     const persistence = new IndexeddbPersistence(`scriblepad-${roomId}`, doc);
 
-    // Setup WebRTC provider for P2P sync
-    // Using public signaling servers - you can host your own for production
-    const provider = new WebrtcProvider(`scriblepad-${roomId}`, doc, {
-        signaling: [
-            "wss://signaling.yjs.dev",
-            "wss://y-webrtc-signaling-eu.herokuapp.com",
-            "wss://y-webrtc-signaling-us.herokuapp.com",
-        ],
-        password: undefined,
-        maxConns: 20,
-        filterBcConns: true,
-        peerOpts: {},
+    // Setup PartyKit provider for real-time sync AND cloud persistence
+    const provider = new YPartyKitProvider(PARTYKIT_HOST, `scriblepad-${roomId}`, doc, {
+        connect: true,
     });
 
     const awareness = provider.awareness;
@@ -82,7 +79,7 @@ export function createYjsContext(
  * Get all connected users from awareness
  */
 export function getAwarenessUsers(
-    awareness: WebrtcProvider["awareness"]
+    awareness: YPartyKitProvider["awareness"]
 ): AwarenessUser[] {
     const users: AwarenessUser[] = [];
 

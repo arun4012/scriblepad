@@ -29,21 +29,18 @@ export default function RoomPage() {
         const identity = getOrCreateIdentity();
         const context = createYjsContext(roomId, identity);
 
-        // Listen for sync events
+        // Listen for sync events (just for the sync indicator, not blocking)
         context.persistence.once("synced", () => {
             setIsSynced(true);
-            setIsLoading(false);
         });
 
-        // Fallback timeout in case sync event doesn't fire
-        const timeout = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-
+        // Show editor immediately - don't block on IndexedDB sync
+        // For new pads there's nothing to load anyway
+        // For existing pads, content will appear as soon as IndexedDB syncs
         setYjsContext(context);
+        setIsLoading(false);
 
         return () => {
-            clearTimeout(timeout);
             context.destroy();
         };
     }, [roomId, router]);

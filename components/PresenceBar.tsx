@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { WebrtcProvider } from "y-webrtc";
+import type YPartyKitProvider from "y-partykit/provider";
 import { getAwarenessUsers, type AwarenessUser } from "@/lib/yjs";
 import { cn } from "@/lib/utils";
 
 interface PresenceBarProps {
-    awareness: WebrtcProvider["awareness"];
+    awareness: YPartyKitProvider["awareness"];
     className?: string;
 }
 
