@@ -1,5 +1,5 @@
 {
-    "name": "ScriblePad",
+    "name": "Online Notepad - ScriblePad",
     "short_name": "ScriblePad",
     "description": "Real-time collaborative notes app with P2P sync",
     "start_url": "/",

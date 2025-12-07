@@ -5,20 +5,48 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://scriblepad.vercel.
 
 export const metadata: Metadata = {
     metadataBase: new URL(BASE_URL),
-    title: "ScriblePad - Real-time Collaborative Notes",
+    title: "Online Notepad - ScriblePad | Real-time Collaborative Notes",
     description:
-        "Create and share notes instantly. No login required. Real-time P2P collaboration with offline support.",
+        "Free online notepad for quick notes and real-time collaboration. No login required. Create, share, and edit notes instantly with anyone. Works offline.",
     keywords: [
-        "notes",
-        "collaboration",
-        "real-time",
-        "PartyKit",
-        "Yjs",
-        "offline",
-        "free",
-        "no signup",
-        "instant notes",
+        // Primary keywords
+        "online notepad",
+        "free online notepad",
+        "notepad online",
+        "online text editor",
+        "free text editor",
+        "quick notes online",
+        "write notes online",
+        // Collaboration keywords
+        "collaborative notes",
+        "real-time collaboration",
+        "shared notepad",
+        "team notes",
         "collaborative editing",
+        "live text editor",
+        // Feature keywords
+        "no login notepad",
+        "no signup notes",
+        "instant notes",
+        "notes without registration",
+        "anonymous notepad",
+        "private notepad",
+        "secure notes",
+        "offline notes",
+        // Use case keywords
+        "scratch pad",
+        "quick note taking",
+        "paste text online",
+        "temporary notes",
+        "shareable notes",
+        "simple notepad",
+        "minimalist notes",
+        // Alternative names
+        "web notepad",
+        "browser notepad",
+        "cloud notepad",
+        "digital notepad",
+        "virtual notepad",
     ],
     authors: [{ name: "ScriblePad" }],
     creator: "ScriblePad",
@@ -35,9 +63,9 @@ export const metadata: Metadata = {
         },
     },
     openGraph: {
-        title: "ScriblePad - Real-time Collaborative Notes",
+        title: "Online Notepad - ScriblePad | Real-time Collaborative Notes",
         description:
-            "Create and share notes instantly. No login required. Real-time P2P collaboration with offline support.",
+            "Free online notepad for quick notes and real-time collaboration. No login required. Create, share, and edit notes instantly with anyone.",
         type: "website",
         siteName: "ScriblePad",
         url: BASE_URL,
@@ -45,9 +73,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "ScriblePad - Real-time Collaborative Notes",
+        title: "Online Notepad - ScriblePad | Real-time Collaborative Notes",
         description:
-            "Create and share notes instantly. No login required. Real-time P2P collaboration with offline support.",
+            "Free online notepad for quick notes and real-time collaboration. No login required. Create, share, and edit notes instantly with anyone.",
     },
     viewport: {
         width: "device-width",
