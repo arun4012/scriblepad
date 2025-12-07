@@ -97,7 +97,7 @@ export default function HomePage() {
                             </svg>
                         }
                         title="Real-time Sync"
-                        description="Changes sync instantly between all connected users via P2P WebRTC."
+                        description="Changes sync instantly between all connected users via PartyKit."
                         gradient="from-primary-500 to-purple-500"
                     />
                     <FeatureCard
@@ -166,12 +166,12 @@ export default function HomePage() {
                     </a>
                     , and{" "}
                     <a
-                        href="https://github.com/yjs/y-webrtc"
+                        href="https://partykit.io"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
                     >
-                        WebRTC
+                        PartyKit
                     </a>
                 </p>
             </footer>
