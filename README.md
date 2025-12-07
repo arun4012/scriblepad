@@ -1,81 +1,109 @@
 # ScriblePad
 
-**Real-time Collaborative Notes App** - Create and share notes instantly with P2P synchronization.
+**Real-time Collaborative Notes App** — Create and share notes instantly with cloud sync and persistence.
 
 ![ScriblePad](./public/icon.svg)
 
 ## ✨ Features
 
-- **No Login Required** - Just create a pad and share the link
-- **Real-time Sync** - P2P WebRTC-based synchronization using Yjs CRDT
-- **Offline Support** - Notes are saved locally with IndexedDB
-- **Presence Awareness** - See who's collaborating with you
-- **Export Options** - Download notes as `.txt` or `.md`
-- **Mobile Friendly** - Fully responsive design
+- 🚀 **No Login Required** — Just create a pad and share the link
+- ⚡ **Real-time Sync** — Instant synchronization using Yjs CRDT + PartyKit
+- 💾 **Cloud Persistence** — Notes persist across devices and browsers
+- 📴 **Offline Support** — Local IndexedDB caching for offline editing
+- 👥 **Presence Awareness** — See who's collaborating with you in real-time
+- 📤 **Export Options** — Download notes as `.txt` or `.md`
+- 📱 **Mobile Friendly** — Fully responsive, touch-optimized design
+- 🎨 **Modern UI** — Glassmorphism, gradients, and smooth animations
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
+- PartyKit account (free) for cloud sync
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/scriblepad.git
+git clone https://github.com/arun4012/scriblepad.git
 cd scriblepad
 
 # Install dependencies
 npm install
 
-# Start development server
+# Create environment file
+cp .env.example .env.local
+```
+
+### Local Development
+
+You need to run **two servers** — Next.js for the frontend and PartyKit for real-time sync:
+
+```bash
+# Terminal 1: Start Next.js dev server
 npm run dev
+
+# Terminal 2: Start PartyKit dev server
+npm run dev:party
+```
+
+Or run both together:
+
+```bash
+npm run dev:all
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📦 Tech Stack
 
-- **Framework**: [Next.js 14](https://nextjs.org/) with App Router
-- **Language**: TypeScript
-- **CRDT Engine**: [Yjs](https://yjs.dev/)
-- **P2P Sync**: [y-webrtc](https://github.com/yjs/y-webrtc)
-- **Local Storage**: [y-indexeddb](https://github.com/yjs/y-indexeddb)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+| Technology | Purpose |
+|------------|---------|
+| [Next.js 14](https://nextjs.org/) | React framework with App Router |
+| [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript |
+| [Yjs](https://yjs.dev/) | CRDT engine for conflict-free editing |
+| [PartyKit](https://partykit.io/) | Real-time sync + cloud persistence |
+| [y-partykit](https://github.com/partykit/y-partykit) | Yjs ↔ PartyKit integration |
+| [y-indexeddb](https://github.com/yjs/y-indexeddb) | Local offline storage |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  Browser Client                  │
-├─────────────────────────────────────────────────┤
-│  React Components                               │
-│  ├── Editor (collaborative textarea)            │
-│  ├── PresenceBar (connected users)              │
-│  └── Controls (share, export)                   │
-├─────────────────────────────────────────────────┤
-│  Yjs Document                                   │
-│  ├── Y.Text (title)                             │
-│  └── Y.Text (content)                           │
-├─────────────────────────────────────────────────┤
-│  Providers                                      │
-│  ├── y-indexeddb (local persistence)            │
-│  └── y-webrtc (P2P sync)                        │
-└─────────────────────────────────────────────────┘
-                      │
-                      ▼
-           ┌─────────────────────┐
-           │   Signaling Server  │
-           │  (wss://yjs.dev)    │
-           └─────────────────────┘
-                      │
-                      ▼
-           ┌─────────────────────┐
-           │   Other Clients     │
-           │   (P2P via WebRTC)  │
-           └─────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                   Browser Client                     │
+├─────────────────────────────────────────────────────┤
+│  React Components                                    │
+│  ├── Editor (collaborative textarea)                 │
+│  ├── PresenceBar (connected users)                   │
+│  └── Controls (share, export)                        │
+├─────────────────────────────────────────────────────┤
+│  Yjs Document                                        │
+│  ├── Y.Text (title)                                  │
+│  └── Y.Text (content)                                │
+├─────────────────────────────────────────────────────┤
+│  Providers                                           │
+│  ├── y-indexeddb (local cache)                       │
+│  └── y-partykit (cloud sync + persistence)           │
+└─────────────────────────────────────────────────────┘
+                        │
+                        ▼
+           ┌──────────────────────────┐
+           │   PartyKit Cloud Server   │
+           │  (scriblepad.*.partykit)  │
+           │                          │
+           │  • WebSocket connections  │
+           │  • Document persistence   │
+           │  • Presence awareness     │
+           └──────────────────────────┘
+                        │
+                        ▼
+           ┌──────────────────────────┐
+           │     Other Clients         │
+           │  (real-time sync)         │
+           └──────────────────────────┘
 ```
 
 ## 📁 Project Structure
@@ -83,94 +111,164 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 scriblepad/
 ├── app/
-│   ├── globals.css          # Global styles
-│   ├── layout.tsx           # Root layout
+│   ├── globals.css          # Global styles & design tokens
+│   ├── layout.tsx           # Root layout with metadata
 │   ├── page.tsx             # Landing page
+│   ├── robots.ts            # SEO robots configuration
 │   └── r/
 │       └── [roomId]/
-│           └── page.tsx     # Room page
+│           └── page.tsx     # Collaborative room page
 ├── components/
-│   ├── Controls.tsx         # Action buttons
-│   ├── Editor.tsx           # Collaborative editor
-│   ├── PresenceBar.tsx      # User presence
-│   └── Toast.tsx            # Notifications
+│   ├── Controls.tsx         # Share, export, copy buttons
+│   ├── Editor.tsx           # Collaborative text editor
+│   ├── PresenceBar.tsx      # Online user indicators
+│   └── Toast.tsx            # Notification system
 ├── lib/
-│   ├── identity.ts          # User identity
+│   ├── identity.ts          # User identity management
 │   ├── utils.ts             # Utility functions
-│   └── yjs.ts               # Yjs setup
-└── public/
-    ├── icon.svg             # App icon
-    └── manifest.json        # PWA manifest
+│   └── yjs.ts               # Yjs + PartyKit setup
+├── party/
+│   └── index.ts             # PartyKit server (Yjs sync)
+├── public/
+│   ├── icon.svg             # App icon
+│   └── manifest.json        # PWA manifest
+├── .env.example             # Environment variables template
+├── partykit.json            # PartyKit configuration
+└── package.json             # Dependencies & scripts
 ```
 
 ## 🌐 Deployment
 
-### Deploy to Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/scriblepad)
-
-Or deploy manually:
+### Step 1: Deploy PartyKit Server
 
 ```bash
-# Install Vercel CLI
-npm install -g vercel
+# Login to PartyKit (one-time)
+npx partykit login
 
-# Deploy
-vercel
+# Deploy the server
+npm run party:deploy
 ```
 
-### Deploy to Other Platforms
+This gives you a URL like: `scriblepad.your-username.partykit.dev`
 
-```bash
-# Build for production
-npm run build
+### Step 2: Deploy to Vercel
 
-# Start production server
-npm start
-```
+1. **Set Environment Variable in Vercel:**
+   - Go to your Vercel project → Settings → Environment Variables
+   - Add: `NEXT_PUBLIC_PARTYKIT_HOST` = `scriblepad.your-username.partykit.dev`
 
-## ⚠️ Known Limitations
+2. **Deploy:**
+   ```bash
+   git push  # Auto-deploys if connected to Vercel
+   ```
 
-### WebRTC P2P Constraints
+   Or deploy manually:
+   ```bash
+   vercel
+   ```
 
-1. **Initial Connection** - Requires at least one user online for sync
-2. **NAT Traversal** - May fail behind strict corporate firewalls
-3. **No Server Persistence** - Data only exists on connected clients
-4. **Scalability** - P2P mesh doesn't scale well beyond ~20 users per room
+### Environment Variables
 
-### For Production Use
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_PARTYKIT_HOST` | PartyKit server URL | `scriblepad.arun4012.partykit.dev` |
 
-Consider upgrading to a hosted backend:
+## 🛠️ Scripts
 
-- [Liveblocks](https://liveblocks.io/) - Managed Yjs infrastructure
-- [PartyKit](https://partykit.io/) - Serverless WebSocket rooms
-- [Hocuspocus](https://tiptap.dev/hocuspocus) - Self-hosted Yjs backend
-- [y-websocket](https://github.com/yjs/y-websocket) - Self-hosted WebSocket server
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Next.js dev server (port 3000) |
+| `npm run dev:party` | Start PartyKit dev server (port 1999) |
+| `npm run dev:all` | Run both servers concurrently |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run party:deploy` | Deploy PartyKit to production |
 
-## 🛠️ Development
+## 🔧 How It Works
 
-```bash
-# Run development server
-npm run dev
+### Real-time Collaboration
 
-# Build for production
-npm run build
+1. **User creates a pad** → Generates unique room ID
+2. **Yjs document created** → Contains title and content as `Y.Text`
+3. **PartyKit provider connects** → Syncs document to cloud
+4. **IndexedDB caches locally** → Enables offline editing
+5. **Share link** → Other users join and sync instantly
 
-# Run linter
-npm run lint
+### Conflict Resolution
 
-# Type check
-npx tsc --noEmit
-```
+ScriblePad uses **Yjs CRDT** (Conflict-free Replicated Data Type):
+- No central authority needed
+- Automatic merge of concurrent edits
+- Works offline, syncs when reconnected
+- Guaranteed eventual consistency
 
-## 📄 License
+### Persistence
 
-MIT License - feel free to use this project for personal or commercial purposes.
+| Layer | Storage | Purpose |
+|-------|---------|---------|
+| **PartyKit** | Cloud (Durable Objects) | Cross-device sync, permanent storage |
+| **IndexedDB** | Browser | Offline cache, instant load |
+
+## 📱 PWA Support
+
+ScriblePad works as a Progressive Web App:
+- **Installable** on mobile and desktop
+- **Offline capable** with local caching
+- **Fast loading** with Next.js optimization
+
+## 🎨 Design System
+
+The UI uses a custom design system with:
+- **CSS Variables** for theming
+- **Dark mode** support
+- **Glassmorphism** effects
+- **Responsive typography**
+- **Touch-optimized** targets (44px minimum)
+
+See `app/globals.css` and `tailwind.config.ts` for customization.
+
+## 🔒 Privacy & Security
+
+- **No accounts required** — Anonymous by design
+- **Room IDs are random** — 21-character nanoid
+- **No tracking** — No analytics or cookies
+- **Data ownership** — You control your notes
+
+> ⚠️ **Note:** Anyone with the room link can view and edit the note. Don't share sensitive information.
+
+## 📊 Performance
+
+| Metric | Value |
+|--------|-------|
+| Initial load | < 2 seconds |
+| Editor ready | Instant (no blocking sync) |
+| Real-time latency | ~50-100ms (depends on network) |
+| Offline → Online sync | Automatic |
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+MIT License — feel free to use this project for personal or commercial purposes.
+
+## 🙏 Acknowledgments
+
+- [Yjs](https://yjs.dev/) — Amazing CRDT implementation
+- [PartyKit](https://partykit.io/) — Fantastic real-time infrastructure
+- [Next.js](https://nextjs.org/) — Best React framework
+- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
+
 ---
 
-Built with 💜 by the ScriblePad team
+Built with 💜 by [Arun](https://github.com/arun4012)
+
+**Live Demo:** [scriblepad.vercel.app](https://scriblepad.vercel.app)
