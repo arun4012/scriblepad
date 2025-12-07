@@ -340,7 +340,7 @@ export function Editor({
                         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                     }}
                     className={cn(
-                        "fixed bottom-6 right-6 z-50",
+                        "fixed bottom-6 right-6 z-30",
                         "flex items-center justify-center",
                         "w-12 h-12 rounded-full",
                         "bg-gradient-to-r from-primary-500 to-purple-600",
@@ -375,7 +375,7 @@ export function Editor({
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     className={cn(
-                        "fixed bottom-6 right-20 z-50",
+                        "fixed bottom-6 right-20 z-30",
                         "flex items-center justify-center",
                         "w-12 h-12 rounded-full",
                         "bg-gradient-to-r from-purple-600 to-primary-500",

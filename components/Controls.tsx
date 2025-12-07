@@ -10,11 +10,19 @@ import {
     cn,
 } from "@/lib/utils";
 import { Toast } from "./Toast";
+import type { Version } from "@/lib/versions";
 
 interface ControlsProps {
     roomId: string;
     titleText: Y.Text;
     contentText: Y.Text;
+    metadataMap: Y.Map<string>;
+    versionsArray: Y.Array<Version>;
+    isPasswordProtected: boolean;
+    onPasswordClick: () => void;
+    onHistoryClick: () => void;
+    onChatClick: () => void;
+    unreadChatCount?: number;
     className?: string;
 }
 
@@ -22,6 +30,11 @@ export function Controls({
     roomId,
     titleText,
     contentText,
+    isPasswordProtected,
+    onPasswordClick,
+    onHistoryClick,
+    onChatClick,
+    unreadChatCount = 0,
     className,
 }: ControlsProps) {
     const [toast, setToast] = useState<{
@@ -61,6 +74,22 @@ export function Controls({
         showToast("Downloaded as .md");
     };
 
+    // Common button styles
+    const secondaryButtonClass = cn(
+        "group inline-flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3",
+        "bg-surface-100 dark:bg-surface-800",
+        "hover:bg-surface-200 dark:hover:bg-surface-700",
+        "text-surface-700 dark:text-gray-300",
+        "border border-surface-200 dark:border-surface-700",
+        "hover:border-surface-300 dark:hover:border-surface-600",
+        "rounded-xl font-medium text-sm md:text-base",
+        "transition-all duration-200",
+        "active:scale-[0.98]",
+        "touch-target"
+    );
+
+    const iconClass = "w-4 h-4 md:w-5 md:h-5 text-surface-500 dark:text-gray-400 group-hover:text-surface-700 dark:group-hover:text-gray-300 transition-colors";
+
     return (
         <>
             <div className={cn("flex items-center gap-2 md:gap-3 flex-wrap", className)}>
@@ -93,24 +122,102 @@ export function Controls({
                     <span>Share Link</span>
                 </button>
 
+                {/* Password Button */}
+                <button
+                    onClick={onPasswordClick}
+                    className={cn(
+                        secondaryButtonClass,
+                        isPasswordProtected && "bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700"
+                    )}
+                    title={isPasswordProtected ? "Password protected" : "Set password"}
+                >
+                    <svg
+                        className={cn(
+                            iconClass,
+                            isPasswordProtected && "text-amber-600 dark:text-amber-400"
+                        )}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d={isPasswordProtected
+                                ? "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                : "M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                            }
+                        />
+                    </svg>
+                    <span className="hidden sm:inline">
+                        {isPasswordProtected ? "Protected" : "Password"}
+                    </span>
+                </button>
+
+                {/* History Button */}
+                <button
+                    onClick={onHistoryClick}
+                    className={secondaryButtonClass}
+                    title="Version history"
+                >
+                    <svg
+                        className={iconClass}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                    <span className="hidden sm:inline">History</span>
+                </button>
+
+                {/* Chat Button */}
+                <button
+                    onClick={onChatClick}
+                    className={cn(
+                        secondaryButtonClass,
+                        "relative",
+                        unreadChatCount > 0 && "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-700"
+                    )}
+                    title="Chat with collaborators"
+                >
+                    <svg
+                        className={cn(
+                            iconClass,
+                            unreadChatCount > 0 && "text-emerald-600 dark:text-emerald-400"
+                        )}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                        />
+                    </svg>
+                    <span className="hidden sm:inline">Chat</span>
+                    {unreadChatCount > 0 && (
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                            {unreadChatCount > 9 ? "9+" : unreadChatCount}
+                        </span>
+                    )}
+                </button>
+
                 {/* Export .txt Button */}
                 <button
                     onClick={handleExportTxt}
-                    className={cn(
-                        "group inline-flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3",
-                        "bg-surface-100 dark:bg-surface-800",
-                        "hover:bg-surface-200 dark:hover:bg-surface-700",
-                        "text-surface-700 dark:text-gray-300",
-                        "border border-surface-200 dark:border-surface-700",
-                        "hover:border-surface-300 dark:hover:border-surface-600",
-                        "rounded-xl font-medium text-sm md:text-base",
-                        "transition-all duration-200",
-                        "active:scale-[0.98]",
-                        "touch-target"
-                    )}
+                    className={secondaryButtonClass}
                 >
                     <svg
-                        className="w-4 h-4 md:w-5 md:h-5 text-surface-500 dark:text-gray-400 group-hover:text-surface-700 dark:group-hover:text-gray-300 transition-colors"
+                        className={iconClass}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -129,21 +236,10 @@ export function Controls({
                 {/* Export .md Button */}
                 <button
                     onClick={handleExportMd}
-                    className={cn(
-                        "group inline-flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3",
-                        "bg-surface-100 dark:bg-surface-800",
-                        "hover:bg-surface-200 dark:hover:bg-surface-700",
-                        "text-surface-700 dark:text-gray-300",
-                        "border border-surface-200 dark:border-surface-700",
-                        "hover:border-surface-300 dark:hover:border-surface-600",
-                        "rounded-xl font-medium text-sm md:text-base",
-                        "transition-all duration-200",
-                        "active:scale-[0.98]",
-                        "touch-target"
-                    )}
+                    className={secondaryButtonClass}
                 >
                     <svg
-                        className="w-4 h-4 md:w-5 md:h-5 text-surface-500 dark:text-gray-400 group-hover:text-surface-700 dark:group-hover:text-gray-300 transition-colors"
+                        className={iconClass}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

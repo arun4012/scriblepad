@@ -2,6 +2,8 @@ import * as Y from "yjs";
 import YPartyKitProvider from "y-partykit/provider";
 import { IndexeddbPersistence } from "y-indexeddb";
 import type { UserIdentity } from "./identity";
+import type { Version } from "./versions";
+import type { ChatMessage } from "./chat";
 
 // PartyKit host - will be set after deployment
 // For local development, use localhost:1999
@@ -15,6 +17,9 @@ export interface YjsContext {
     persistence: IndexeddbPersistence;
     titleText: Y.Text;
     contentText: Y.Text;
+    metadataMap: Y.Map<string>;
+    versionsArray: Y.Array<Version>;
+    chatMessages: Y.Array<ChatMessage>;
     awareness: YPartyKitProvider["awareness"];
     destroy: () => void;
 }
@@ -38,6 +43,15 @@ export function createYjsContext(
     // Create shared text types for title and content
     const titleText = doc.getText("title");
     const contentText = doc.getText("content");
+
+    // Create metadata map for password and settings
+    const metadataMap = doc.getMap<string>("metadata");
+
+    // Create versions array for version history
+    const versionsArray = doc.getArray<Version>("versions");
+
+    // Create chat messages array for real-time chat
+    const chatMessages = doc.getArray<ChatMessage>("chatMessages");
 
     // Setup IndexedDB persistence for offline support (local cache)
     const persistence = new IndexeddbPersistence(`scriblepad-${roomId}`, doc);
@@ -70,10 +84,14 @@ export function createYjsContext(
         persistence,
         titleText,
         contentText,
+        metadataMap,
+        versionsArray,
+        chatMessages,
         awareness,
         destroy,
     };
 }
+
 
 /**
  * Get all connected users from awareness

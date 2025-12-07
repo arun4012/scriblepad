@@ -11,9 +11,12 @@
 - 💾 **Cloud Persistence** — Notes persist across devices and browsers
 - 📴 **Offline Support** — Local IndexedDB caching for offline editing
 - 👥 **Presence Awareness** — See who's collaborating with you in real-time
+- 💬 **Real-time Chat** — Chat with collaborators directly in the pad
+- 🔒 **Password Protection** — Optionally protect pads with a password
+- 📜 **Version History** — View and restore previous versions of notes
 - 📤 **Export Options** — Download notes as `.txt` or `.md`
 - 📱 **Mobile Friendly** — Fully responsive, touch-optimized design
-- 🎨 **Modern UI** — Glassmorphism, gradients, and smooth animations
+- 🎨 **Modern UI** — Glassmorphism, gradients, dark mode support
 
 ## 🚀 Quick Start
 
