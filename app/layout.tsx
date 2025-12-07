@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://scriblepad.vercel.app';
+
 export const metadata: Metadata = {
+    metadataBase: new URL(BASE_URL),
     title: "ScriblePad - Real-time Collaborative Notes",
     description:
         "Create and share notes instantly. No login required. Real-time P2P collaboration with offline support.",
@@ -13,14 +16,32 @@ export const metadata: Metadata = {
         "WebRTC",
         "offline",
         "free",
+        "no signup",
+        "instant notes",
+        "collaborative editing",
     ],
     authors: [{ name: "ScriblePad" }],
+    creator: "ScriblePad",
+    publisher: "ScriblePad",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
     openGraph: {
         title: "ScriblePad - Real-time Collaborative Notes",
         description:
             "Create and share notes instantly. No login required. Real-time P2P collaboration with offline support.",
         type: "website",
         siteName: "ScriblePad",
+        url: BASE_URL,
+        locale: 'en_US',
     },
     twitter: {
         card: "summary_large_image",
@@ -36,6 +57,12 @@ export const metadata: Metadata = {
         { media: "(prefers-color-scheme: light)", color: "#ffffff" },
         { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
     ],
+    alternates: {
+        canonical: BASE_URL,
+    },
+    verification: {
+        google: 'LCdekK0sRF2h_Ekytu5G9WeWqBtsyvoDygeaLESC5Hs',
+    },
 };
 
 export default function RootLayout({
