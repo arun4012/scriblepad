@@ -13,11 +13,15 @@ export default function HomePage() {
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 page-enter relative overflow-hidden">
-            {/* Mesh gradient background */}
+            {/* 3D Background Image */}
             <div className="absolute inset-0 -z-10">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-ink-900 dark:via-indigo-950 dark:to-purple-950" />
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(0,0,0,0))]" />
-                <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_60%_60%_at_100%_100%,rgba(168,85,247,0.2),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_60%_60%_at_100%_100%,rgba(168,85,247,0.1),rgba(0,0,0,0))]" />
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 dark:opacity-20 scale-110"
+                    style={{ backgroundImage: 'url(/bg-3d.png)' }}
+                />
+
+                {/* Overlay gradient to ensure text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/10 to-white/60 dark:from-ink-900/40 dark:via-ink-900/20 dark:to-ink-900/80" />
             </div>
 
             {/* Hero Section */}
