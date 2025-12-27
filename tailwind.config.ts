@@ -62,15 +62,25 @@ const config: Config = {
                 sans: ["Inter", "system-ui", "sans-serif"],
                 mono: ["JetBrains Mono", "monospace"],
             },
+            backgroundImage: {
+                'grid-pattern': "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(79 70 229 / 0.1)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")",
+            },
             animation: {
-                "fade-in": "fadeIn 0.3s ease-out",
+                "fade-in": "fadeIn 0.5s ease-out forwards",
+                "fade-in-up": "fadeInUp 0.8s ease-out forwards",
                 "slide-up": "slideUp 0.3s ease-out",
                 "pulse-soft": "pulseSoft 2s ease-in-out infinite",
+                "float-slow": "float 8s ease-in-out infinite",
+                "blink": "blink 1s step-end infinite",
             },
             keyframes: {
                 fadeIn: {
                     "0%": { opacity: "0" },
                     "100%": { opacity: "1" },
+                },
+                fadeInUp: {
+                    "0%": { opacity: "0", transform: "translateY(20px)" },
+                    "100%": { opacity: "1", transform: "translateY(0)" },
                 },
                 slideUp: {
                     "0%": { opacity: "0", transform: "translateY(8px)" },
@@ -79,6 +89,14 @@ const config: Config = {
                 pulseSoft: {
                     "0%, 100%": { opacity: "1" },
                     "50%": { opacity: "0.6" },
+                },
+                float: {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-20px)" },
+                },
+                blink: {
+                    "0%, 100%": { opacity: "1" },
+                    "50%": { opacity: "0" },
                 },
             },
             boxShadow: {

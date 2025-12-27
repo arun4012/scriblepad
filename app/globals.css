@@ -258,23 +258,6 @@ body {
   }
 }
 
-/* ===== Page Transitions ===== */
-.page-enter {
-  animation: pageEnter 0.3s ease-out;
-}
-
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* ===== Ambient Background ===== */
 .ambient-bg {
   background: var(--paper-100);
@@ -322,37 +305,6 @@ body {
   }
 }
 
-/* ===== Subtle Animations ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
-}
-
 /* ===== Status Indicators ===== */
 .status-synced {
   background: var(--accent-emerald);
@@ -362,16 +314,4 @@ body {
 .status-syncing {
   background: var(--accent-amber);
   animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.6;
-  }
 }
