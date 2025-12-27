@@ -1,16 +1,26 @@
 {
     "name": "Online Notepad - ScriblePad",
     "short_name": "ScriblePad",
-    "description": "Real-time collaborative notes app with P2P sync",
+    "description": "Real-time collaborative notes app with cloud sync",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#6366f1",
+    "background_color": "#F8FAFC",
+    "theme_color": "#4F46E5",
     "icons": [
         {
             "src": "/icon.svg",
             "sizes": "any",
             "type": "image/svg+xml"
+        },
+        {
+            "src": "/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
         }
     ]
 }

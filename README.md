@@ -2,7 +2,7 @@
 
 **Real-time Collaborative Notes App** — Create and share notes instantly with cloud sync and persistence.
 
-![ScriblePad](./public/icon.svg)
+![ScriblePad](./public/favicon.png)
 
 ## ✨ Features
 
@@ -16,7 +16,7 @@
 - 📜 **Version History** — View and restore previous versions of notes
 - 📤 **Export Options** — Download notes as `.txt` or `.md`
 - 📱 **Mobile Friendly** — Fully responsive, touch-optimized design
-- 🎨 **Modern UI** — Glassmorphism, gradients, dark mode support
+- 🎨 **Modern UI** — Clean "Ink & Paper" design, dark mode support
 
 ## 🚀 Quick Start
 
@@ -133,7 +133,7 @@ scriblepad/
 ├── party/
 │   └── index.ts             # PartyKit server (Yjs sync)
 ├── public/
-│   ├── icon.svg             # App icon
+│   ├── favicon.png          # App icon (512x512)
 │   └── manifest.json        # PWA manifest
 ├── .env.example             # Environment variables template
 ├── partykit.json            # PartyKit configuration
@@ -222,11 +222,12 @@ ScriblePad works as a Progressive Web App:
 
 ## 🎨 Design System
 
-The UI uses a custom design system with:
-- **CSS Variables** for theming
-- **Dark mode** support
-- **Glassmorphism** effects
-- **Responsive typography**
+The UI uses an **"Ink & Paper"** design language:
+- **Color palette** — Electric Indigo (#4F46E5) primary, Ink/Paper surfaces
+- **Clean surfaces** — Paper-white cards with subtle micro-shadows
+- **Minimal animations** — Subtle fades and transitions
+- **Dark mode** support with Ink-900 (#0F172A) backgrounds
+- **Responsive typography** — Inter font family with fluid sizing
 - **Touch-optimized** targets (44px minimum)
 
 See `app/globals.css` and `tailwind.config.ts` for customization.
@@ -272,6 +273,6 @@ MIT License — feel free to use this project for personal or commercial purpose
 
 ---
 
-Built with 💜 by [Arun](https://github.com/arun4012)
+Built with 💙 by [Arun](https://github.com/arun4012)
 
 **Live Demo:** [scriblepad.vercel.app](https://scriblepad.vercel.app)

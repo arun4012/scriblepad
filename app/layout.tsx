@@ -1,7 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://scriblepad.vercel.app';
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#F8FAFC" },
+        { media: "(prefers-color-scheme: dark)", color: "#0F172A" },
+    ],
+};
 
 export const metadata: Metadata = {
     metadataBase: new URL(BASE_URL),
@@ -77,20 +86,13 @@ export const metadata: Metadata = {
         description:
             "Free online notepad for quick notes and real-time collaboration. No login required. Create, share, and edit notes instantly with anyone.",
     },
-    viewport: {
-        width: "device-width",
-        initialScale: 1,
-    },
-    themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-        { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
-    ],
     alternates: {
         canonical: BASE_URL,
     },
     verification: {
         google: 'LCdekK0sRF2h_Ekytu5G9WeWqBtsyvoDygeaLESC5Hs',
     },
+
 };
 
 export default function RootLayout({
@@ -101,22 +103,12 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                <link rel="icon" href="/favicon.ico" sizes="any" />
-                <link
-                    rel="icon"
-                    href="/icon.svg"
-                    type="image/svg+xml"
-                />
+                <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+                <link rel="icon" href="/favicon.png" type="image/png" sizes="512x512" />
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
             </head>
-            <body className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-gray-900 dark:text-white antialiased">
-                <div className="fixed inset-0 -z-10 overflow-hidden">
-                    {/* Decorative background orbs */}
-                    <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-400/20 rounded-full blur-3xl" />
-                    <div className="absolute top-1/2 -left-40 w-80 h-80 bg-accent-400/20 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-40 right-1/3 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl" />
-                </div>
+            <body className="min-h-screen bg-paper-100 dark:bg-ink-900 text-ink-900 dark:text-white antialiased">
                 {children}
             </body>
         </html>
