@@ -107,7 +107,7 @@ export default function RootLayout({
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
             </head>
-            <body className="min-h-screen bg-paper-100 dark:bg-ink-900 text-ink-900 dark:text-white antialiased">
+            <body className="min-h-screen text-ink-900 dark:text-white antialiased">
                 {children}
             </body>
         </html>
