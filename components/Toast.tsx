@@ -37,15 +37,15 @@ export function Toast({
         <div
             className={cn(
                 "fixed bottom-20 right-6 z-50",
-                "px-4 py-3 rounded-lg shadow-lg",
+                "px-4 py-3 rounded-xl shadow-soft-lg",
                 "flex items-center gap-3",
                 "transform transition-all duration-300",
                 isVisible
                     ? "translate-y-0 opacity-100"
                     : "translate-y-4 opacity-0",
                 type === "success"
-                    ? "bg-green-500 text-white"
-                    : "bg-red-500 text-white"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-red-600 text-white"
             )}
         >
             {type === "success" ? (

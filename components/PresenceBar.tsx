@@ -37,15 +37,15 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
         <div
             className={cn(
                 "flex items-center gap-3 px-4 py-2.5",
-                "bg-white/80 dark:bg-surface-800/80",
-                "backdrop-blur-md rounded-full",
-                "border border-surface-200/60 dark:border-surface-700/60",
+                "bg-white dark:bg-ink-800",
+                "rounded-full",
+                "border border-paper-300 dark:border-ink-700",
                 "shadow-soft",
                 className
             )}
         >
             {/* User count badge */}
-            <div className="flex items-center gap-1.5 text-sm text-surface-600 dark:text-gray-400">
+            <div className="flex items-center gap-1.5 text-sm text-ink-500 dark:text-ink-400">
                 <div className="p-1.5 rounded-lg bg-primary-50 dark:bg-primary-900/30">
                     <svg
                         className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400"
@@ -61,10 +61,10 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
                         />
                     </svg>
                 </div>
-                <span className="font-semibold text-surface-700 dark:text-gray-300">{users.length}</span>
+                <span className="font-semibold text-ink-700 dark:text-ink-300">{users.length}</span>
             </div>
 
-            <div className="h-5 w-px bg-surface-200 dark:bg-surface-700" />
+            <div className="h-5 w-px bg-paper-300 dark:bg-ink-700" />
 
             {/* User avatars */}
             <div className="flex items-center -space-x-2">
@@ -78,13 +78,13 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
                             className={cn(
                                 "w-8 h-8 rounded-full flex items-center justify-center",
                                 "text-white text-xs font-bold",
-                                "ring-2 ring-white dark:ring-surface-800",
+                                "ring-2 ring-white dark:ring-ink-800",
                                 "transition-all duration-200",
-                                "hover:scale-110 hover:ring-primary-400 dark:hover:ring-primary-500",
-                                "shadow-md hover:shadow-lg"
+                                "hover:scale-110 hover:ring-primary-500",
+                                "shadow-soft"
                             )}
                             style={{
-                                background: `linear-gradient(135deg, ${user.color} 0%, ${adjustColor(user.color, -20)} 100%)`
+                                background: user.color
                             }}
                         >
                             {user.name.slice(0, 2).toUpperCase()}
@@ -94,10 +94,10 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
                         <div
                             className={cn(
                                 "absolute top-full left-1/2 -translate-x-1/2 mt-2",
-                                "px-3 py-1.5 bg-surface-900 dark:bg-surface-700 text-white text-xs font-medium rounded-lg",
+                                "px-3 py-1.5 bg-ink-900 dark:bg-ink-700 text-white text-xs font-medium rounded-lg",
                                 "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
                                 "pointer-events-none whitespace-nowrap z-50",
-                                "shadow-lg"
+                                "shadow-soft-lg"
                             )}
                         >
                             {user.name}
@@ -117,11 +117,11 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
                     <div
                         className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center",
-                            "bg-gradient-to-br from-surface-200 to-surface-300 dark:from-surface-700 dark:to-surface-600",
-                            "text-surface-600 dark:text-gray-200",
+                            "bg-paper-300 dark:bg-ink-700",
+                            "text-ink-600 dark:text-ink-300",
                             "text-xs font-bold",
-                            "ring-2 ring-white dark:ring-surface-800",
-                            "shadow-md"
+                            "ring-2 ring-white dark:ring-ink-800",
+                            "shadow-soft"
                         )}
                     >
                         +{users.length - 5}
@@ -130,25 +130,4 @@ export function PresenceBar({ awareness, className }: PresenceBarProps) {
             </div>
         </div>
     );
-}
-
-// Helper function to darken/lighten a hex color
-function adjustColor(color: string, amount: number): string {
-    const clamp = (val: number) => Math.max(0, Math.min(255, val));
-
-    // Parse hex color
-    let hex = color.replace('#', '');
-    if (hex.length === 3) {
-        hex = hex.split('').map(c => c + c).join('');
-    }
-
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    const newR = clamp(r + amount);
-    const newG = clamp(g + amount);
-    const newB = clamp(b + amount);
-
-    return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
 }

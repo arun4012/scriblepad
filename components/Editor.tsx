@@ -293,27 +293,27 @@ export function Editor({
                 placeholder={placeholder}
                 className={cn(
                     "w-full bg-transparent outline-none resize-none overflow-hidden",
-                    "placeholder:text-surface-700/40 dark:placeholder:text-gray-500",
+                    "placeholder:text-ink-400 dark:placeholder:text-ink-500",
                     "focus:ring-0 border-none transition-colors duration-200",
                     isTitle
-                        ? "text-2xl md:text-3xl lg:text-4xl font-bold text-surface-900 dark:text-white h-auto tracking-tight"
-                        : "text-base md:text-lg text-surface-800 dark:text-gray-200 min-h-[300px] leading-relaxed",
+                        ? "text-2xl md:text-3xl lg:text-4xl font-bold text-ink-900 dark:text-white h-auto tracking-tight"
+                        : "text-base md:text-lg text-ink-800 dark:text-ink-200 min-h-[300px] leading-relaxed",
                     className
                 )}
                 rows={isTitle ? 1 : undefined}
                 spellCheck="true"
             />
             {showCharCount && !isTitle && (
-                <div className="flex items-center justify-end gap-3 text-sm text-surface-700/50 dark:text-gray-500 mt-3 select-none">
+                <div className="flex items-center justify-end gap-3 text-sm text-ink-400 dark:text-ink-500 mt-3 select-none">
                     <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-xs bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded-md">
+                        <span className="font-mono text-xs bg-paper-200 dark:bg-ink-800 px-2 py-1 rounded-md">
                             {wordCount.toLocaleString()}
                         </span>
                         <span>{wordCount === 1 ? "word" : "words"}</span>
                     </div>
-                    <span className="text-surface-300 dark:text-surface-600">·</span>
+                    <span className="text-paper-400 dark:text-ink-600">·</span>
                     <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-xs bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded-md">
+                        <span className="font-mono text-xs bg-paper-200 dark:bg-ink-800 px-2 py-1 rounded-md">
                             {charCount.toLocaleString()}
                         </span>
                         <span>{charCount === 1 ? "character" : "characters"}</span>
@@ -343,9 +343,9 @@ export function Editor({
                         "fixed bottom-6 right-6 z-30",
                         "flex items-center justify-center",
                         "w-12 h-12 rounded-full",
-                        "bg-gradient-to-r from-primary-500 to-purple-600",
-                        "text-white shadow-lg shadow-primary-500/30",
-                        "hover:shadow-xl hover:shadow-primary-500/40",
+                        "bg-primary-600 hover:bg-primary-700",
+                        "text-white shadow-soft-lg",
+                        "hover:shadow-soft-xl",
                         "hover:scale-105 active:scale-95",
                         "transition-all duration-200"
                     )}
@@ -378,9 +378,9 @@ export function Editor({
                         "fixed bottom-6 right-20 z-30",
                         "flex items-center justify-center",
                         "w-12 h-12 rounded-full",
-                        "bg-gradient-to-r from-purple-600 to-primary-500",
-                        "text-white shadow-lg shadow-purple-500/30",
-                        "hover:shadow-xl hover:shadow-purple-500/40",
+                        "bg-ink-700 hover:bg-ink-800 dark:bg-ink-600 dark:hover:bg-ink-500",
+                        "text-white shadow-soft-lg",
+                        "hover:shadow-soft-xl",
                         "hover:scale-105 active:scale-95",
                         "transition-all duration-200"
                     )}

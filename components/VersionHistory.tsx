@@ -68,42 +68,43 @@ export function VersionHistory({
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden"
+                className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
                 onClick={onClose}
             />
 
             {/* Panel */}
             <div
                 className={cn(
-                    "fixed z-50 bg-white dark:bg-surface-900 shadow-2xl",
+                    "fixed z-50 bg-white dark:bg-ink-900 shadow-soft-xl",
                     "flex flex-col",
+                    "border-l border-paper-300 dark:border-ink-700",
                     // Mobile: bottom sheet
-                    "inset-x-0 bottom-0 max-h-[70vh] rounded-t-2xl",
+                    "inset-x-0 bottom-0 max-h-[70vh] rounded-t-2xl border-t",
                     // Desktop: side panel
-                    "md:inset-y-0 md:right-0 md:left-auto md:w-96 md:max-h-none md:rounded-l-2xl md:rounded-tr-none",
+                    "md:inset-y-0 md:right-0 md:left-auto md:w-96 md:max-h-none md:rounded-l-2xl md:rounded-tr-none md:border-t-0",
                     "animate-in slide-in-from-bottom md:slide-in-from-right duration-300"
                 )}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-surface-200 dark:border-surface-700">
+                <div className="flex items-center justify-between p-4 border-b border-paper-300 dark:border-ink-700">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary-500/20 text-primary-500 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div>
-                            <h2 className="font-bold text-surface-900 dark:text-white">
+                            <h2 className="font-bold text-ink-900 dark:text-white">
                                 Version History
                             </h2>
-                            <p className="text-sm text-surface-500 dark:text-gray-400">
+                            <p className="text-sm text-ink-500 dark:text-ink-400">
                                 {versions.length} version{versions.length !== 1 ? "s" : ""} saved
                             </p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-500 transition-colors"
+                        className="p-2 rounded-lg hover:bg-paper-200 dark:hover:bg-ink-800 text-ink-500 transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -115,15 +116,15 @@ export function VersionHistory({
                 <div className="flex-1 overflow-y-auto p-4 space-y-2">
                     {versions.length === 0 ? (
                         <div className="text-center py-8">
-                            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center">
-                                <svg className="w-8 h-8 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-paper-200 dark:bg-ink-800 flex items-center justify-center">
+                                <svg className="w-8 h-8 text-ink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <p className="text-surface-600 dark:text-gray-400 font-medium">
+                            <p className="text-ink-600 dark:text-ink-400 font-medium">
                                 No versions yet
                             </p>
-                            <p className="text-sm text-surface-500 dark:text-gray-500 mt-1">
+                            <p className="text-sm text-ink-500 dark:text-ink-500 mt-1">
                                 Versions are saved automatically as you edit
                             </p>
                         </div>
@@ -137,16 +138,16 @@ export function VersionHistory({
                                 className={cn(
                                     "w-full text-left p-3 rounded-xl border transition-all",
                                     selectedVersion?.id === version.id
-                                        ? "bg-primary-50 dark:bg-primary-900/20 border-primary-300 dark:border-primary-700"
-                                        : "bg-surface-50 dark:bg-surface-800 border-surface-200 dark:border-surface-700 hover:border-surface-300 dark:hover:border-surface-600"
+                                        ? "bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-700"
+                                        : "bg-paper-50 dark:bg-ink-800 border-paper-300 dark:border-ink-700 hover:border-paper-400 dark:hover:border-ink-600"
                                 )}
                             >
                                 <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-medium text-surface-900 dark:text-white truncate">
+                                        <p className="font-medium text-ink-900 dark:text-white truncate">
                                             {version.titleSnapshot || "Untitled"}
                                         </p>
-                                        <p className="text-sm text-surface-500 dark:text-gray-400 mt-0.5">
+                                        <p className="text-sm text-ink-500 dark:text-ink-400 mt-0.5">
                                             {formatVersionTime(version.timestamp)}
                                         </p>
                                     </div>
@@ -157,11 +158,11 @@ export function VersionHistory({
                                     )}
                                 </div>
                                 {selectedVersion?.id === version.id && (
-                                    <div className="mt-3 pt-3 border-t border-surface-200 dark:border-surface-700">
-                                        <p className="text-xs text-surface-500 dark:text-gray-400 uppercase font-medium mb-1">
+                                    <div className="mt-3 pt-3 border-t border-paper-300 dark:border-ink-700">
+                                        <p className="text-xs text-ink-500 dark:text-ink-400 uppercase font-medium mb-1">
                                             Preview
                                         </p>
-                                        <p className="text-sm text-surface-600 dark:text-gray-300 line-clamp-3">
+                                        <p className="text-sm text-ink-600 dark:text-ink-300 line-clamp-3">
                                             {version.contentSnapshot || "(empty)"}
                                         </p>
                                     </div>
@@ -173,14 +174,14 @@ export function VersionHistory({
 
                 {/* Footer Actions */}
                 {selectedVersion && (
-                    <div className="p-4 border-t border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800/50">
+                    <div className="p-4 border-t border-paper-300 dark:border-ink-700 bg-paper-50 dark:bg-ink-800/50">
                         <button
                             onClick={handleRestore}
                             disabled={isRestoring}
                             className={cn(
                                 "w-full py-3 px-4 rounded-xl font-semibold text-white",
-                                "bg-gradient-to-r from-primary-500 to-purple-600",
-                                "hover:shadow-lg hover:shadow-primary-500/30",
+                                "bg-primary-600 hover:bg-primary-700",
+                                "shadow-soft hover:shadow-soft-md",
                                 "transition-all duration-200",
                                 "disabled:opacity-50 disabled:cursor-not-allowed"
                             )}
@@ -204,7 +205,7 @@ export function VersionHistory({
                                 </>
                             )}
                         </button>
-                        <p className="text-xs text-center text-surface-500 dark:text-gray-400 mt-2">
+                        <p className="text-xs text-center text-ink-500 dark:text-ink-400 mt-2">
                             This will replace current content
                         </p>
                     </div>

@@ -230,9 +230,9 @@ export default function RoomPage() {
         return (
             <div className="min-h-screen flex items-center justify-center ambient-bg">
                 <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 shadow-glow-lg mb-6 pulse-glow">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600 shadow-soft-lg mb-6">
                         <svg
-                            className="w-10 h-10 text-white animate-pulse"
+                            className="w-8 h-8 text-white animate-pulse"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -245,10 +245,10 @@ export default function RoomPage() {
                             />
                         </svg>
                     </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-surface-900 dark:text-white mb-2">
+                    <h2 className="text-xl md:text-2xl font-bold text-ink-900 dark:text-white mb-2">
                         Loading your pad...
                     </h2>
-                    <p className="text-surface-700/70 dark:text-gray-400">
+                    <p className="text-ink-500 dark:text-ink-400">
                         Connecting to collaborators
                     </p>
                 </div>
@@ -259,13 +259,13 @@ export default function RoomPage() {
     if (!yjsContext) {
         return (
             <div className="min-h-screen flex items-center justify-center ambient-bg">
-                <div className="text-center glass-card p-8 rounded-2xl">
+                <div className="text-center card-paper p-8">
                     <h2 className="text-xl font-bold text-red-600 mb-4">
                         Failed to initialize
                     </h2>
                     <Link
                         href="/"
-                        className="text-primary-500 hover:text-primary-600 font-medium transition-colors"
+                        className="text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium transition-colors"
                     >
                         Go back home
                     </Link>
@@ -282,9 +282,9 @@ export default function RoomPage() {
                     {/* Logo / Home Link */}
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-surface-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors group"
+                        className="flex items-center gap-2 text-ink-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors group"
                     >
-                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-md group-hover:shadow-glow transition-shadow">
+                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-primary-600 flex items-center justify-center shadow-soft group-hover:shadow-soft-md transition-shadow">
                             <svg
                                 className="w-4 h-4 md:w-5 md:h-5 text-white"
                                 fill="none"
@@ -314,9 +314,10 @@ export default function RoomPage() {
                         className={cn(
                             "inline-flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5",
                             "text-sm font-semibold rounded-xl",
-                            "bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-gray-300",
-                            "hover:bg-primary-50 dark:hover:bg-primary-900/30",
-                            "hover:text-primary-600 dark:hover:text-primary-400",
+                            "bg-paper-200 dark:bg-ink-800 text-ink-700 dark:text-ink-300",
+                            "border border-paper-300 dark:border-ink-700",
+                            "hover:bg-paper-300 dark:hover:bg-ink-700",
+                            "hover:border-paper-400 dark:hover:border-ink-600",
                             "transition-all duration-200 touch-target"
                         )}
                     >
@@ -347,28 +348,28 @@ export default function RoomPage() {
             <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 md:py-8">
                 {/* Sync Status Indicator */}
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 dark:bg-ink-800 border border-paper-300 dark:border-ink-700">
                         <div
                             className={cn(
-                                "w-2.5 h-2.5 rounded-full",
+                                "w-2 h-2 rounded-full",
                                 isSynced
-                                    ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"
-                                    : "bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.5)]"
+                                    ? "bg-emerald-500"
+                                    : "bg-amber-500 animate-pulse"
                             )}
                         />
-                        <span className="text-sm font-medium text-surface-700 dark:text-gray-300">
+                        <span className="text-sm font-medium text-ink-600 dark:text-ink-300">
                             {isSynced ? "Synced" : "Syncing..."}
                         </span>
                     </div>
                     {isPasswordProtected && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
                             <svg className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                             <span className="text-xs font-medium text-amber-700 dark:text-amber-400">Protected</span>
                         </div>
                     )}
-                    <span className="text-sm text-surface-700/50 dark:text-gray-500 font-mono">
+                    <span className="text-sm text-ink-400 dark:text-ink-500 font-mono">
                         {roomId}
                     </span>
                 </div>
@@ -376,17 +377,17 @@ export default function RoomPage() {
                 {/* Editor Area - Locked Overlay when password protected but not unlocked */}
                 <div className="relative">
                     {isPasswordProtected && !isUnlocked && (
-                        <div className="absolute inset-0 z-30 bg-white/80 dark:bg-surface-900/90 backdrop-blur-sm rounded-2xl md:rounded-3xl flex items-center justify-center">
+                        <div className="absolute inset-0 z-30 bg-white/90 dark:bg-ink-900/95 backdrop-blur-sm rounded-2xl flex items-center justify-center">
                             <div className="text-center p-8">
-                                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-500/20 text-amber-500 flex items-center justify-center">
+                                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
-                                <h3 className="text-lg font-bold text-surface-900 dark:text-white mb-2">
+                                <h3 className="text-lg font-bold text-ink-900 dark:text-white mb-2">
                                     This pad is protected
                                 </h3>
-                                <p className="text-surface-600 dark:text-gray-400 mb-4">
+                                <p className="text-ink-500 dark:text-ink-400 mb-4">
                                     Enter the password to view and edit
                                 </p>
                                 <button
@@ -394,7 +395,7 @@ export default function RoomPage() {
                                         setPasswordModalMode("unlock");
                                         setShowPasswordModal(true);
                                     }}
-                                    className="px-6 py-2.5 bg-gradient-to-r from-primary-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                                    className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-soft hover:shadow-soft-md transition-all"
                                 >
                                     Unlock Pad
                                 </button>
@@ -402,7 +403,7 @@ export default function RoomPage() {
                         </div>
                     )}
 
-                    <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 mb-6 shadow-soft-lg">
+                    <div className="card-paper p-5 md:p-8 mb-6">
                         {/* Title */}
                         <Editor
                             yText={yjsContext.titleText}
@@ -413,7 +414,7 @@ export default function RoomPage() {
                         />
 
                         {/* Divider */}
-                        <div className="h-px bg-gradient-to-r from-transparent via-primary-300/50 dark:via-primary-600/30 to-transparent mb-6" />
+                        <div className="h-px bg-paper-300 dark:bg-ink-700 mb-6" />
 
                         {/* Content */}
                         <Editor
@@ -440,10 +441,10 @@ export default function RoomPage() {
             </main>
 
             {/* Footer */}
-            <footer className="py-5 text-center text-sm text-surface-700/50 dark:text-gray-500 safe-bottom">
+            <footer className="py-5 text-center text-sm text-ink-400 dark:text-ink-500 safe-bottom">
                 <p>
                     Changes are saved automatically ·{" "}
-                    <Link href="/" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
+                    <Link href="/" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors">
                         Create new pad
                     </Link>
                 </p>

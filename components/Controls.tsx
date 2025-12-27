@@ -77,18 +77,18 @@ export function Controls({
     // Common button styles
     const secondaryButtonClass = cn(
         "group inline-flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3",
-        "bg-surface-100 dark:bg-surface-800",
-        "hover:bg-surface-200 dark:hover:bg-surface-700",
-        "text-surface-700 dark:text-gray-300",
-        "border border-surface-200 dark:border-surface-700",
-        "hover:border-surface-300 dark:hover:border-surface-600",
+        "bg-paper-200 dark:bg-ink-800",
+        "hover:bg-paper-300 dark:hover:bg-ink-700",
+        "text-ink-600 dark:text-ink-300",
+        "border border-paper-300 dark:border-ink-700",
+        "hover:border-paper-400 dark:hover:border-ink-600",
         "rounded-xl font-medium text-sm md:text-base",
         "transition-all duration-200",
         "active:scale-[0.98]",
         "touch-target"
     );
 
-    const iconClass = "w-4 h-4 md:w-5 md:h-5 text-surface-500 dark:text-gray-400 group-hover:text-surface-700 dark:group-hover:text-gray-300 transition-colors";
+    const iconClass = "w-4 h-4 md:w-5 md:h-5 text-ink-500 dark:text-ink-400 group-hover:text-ink-700 dark:group-hover:text-ink-200 transition-colors";
 
     return (
         <>
@@ -98,10 +98,10 @@ export function Controls({
                     onClick={handleCopyLink}
                     className={cn(
                         "group inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3",
-                        "bg-gradient-to-r from-primary-500 to-purple-600 text-white",
+                        "bg-primary-600 hover:bg-primary-700 text-white",
                         "rounded-xl font-semibold text-sm md:text-base",
-                        "transition-all duration-300",
-                        "hover:shadow-lg hover:shadow-primary-500/30",
+                        "transition-all duration-200",
+                        "shadow-soft hover:shadow-soft-md",
                         "active:scale-[0.98]",
                         "touch-target"
                     )}
@@ -127,7 +127,7 @@ export function Controls({
                     onClick={onPasswordClick}
                     className={cn(
                         secondaryButtonClass,
-                        isPasswordProtected && "bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700"
+                        isPasswordProtected && "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-700"
                     )}
                     title={isPasswordProtected ? "Password protected" : "Set password"}
                 >
@@ -183,7 +183,7 @@ export function Controls({
                     className={cn(
                         secondaryButtonClass,
                         "relative",
-                        unreadChatCount > 0 && "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-700"
+                        unreadChatCount > 0 && "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700"
                     )}
                     title="Chat with collaborators"
                 >

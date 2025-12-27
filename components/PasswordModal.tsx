@@ -77,17 +77,17 @@ export function PasswordModal({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/40"
                 onClick={mode !== "unlock" ? onClose : undefined}
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-md glass-card rounded-2xl p-6 md:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="relative w-full max-w-md bg-white dark:bg-ink-800 rounded-2xl p-6 md:p-8 shadow-soft-xl border border-paper-300 dark:border-ink-700 animate-in fade-in zoom-in-95 duration-200">
                 {/* Close button (not shown for unlock mode) */}
                 {mode !== "unlock" && (
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-surface-500 hover:text-surface-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                        className="absolute top-4 right-4 text-ink-400 hover:text-ink-600 dark:text-ink-500 dark:hover:text-ink-300 transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -100,8 +100,8 @@ export function PasswordModal({
                     <div className={cn(
                         "w-16 h-16 rounded-2xl flex items-center justify-center",
                         mode === "unlock"
-                            ? "bg-amber-500/20 text-amber-500"
-                            : "bg-primary-500/20 text-primary-500"
+                            ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+                            : "bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400"
                     )}>
                         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path
@@ -118,12 +118,12 @@ export function PasswordModal({
                 </div>
 
                 {/* Title */}
-                <h2 className="text-xl md:text-2xl font-bold text-center text-surface-900 dark:text-white mb-2">
+                <h2 className="text-xl md:text-2xl font-bold text-center text-ink-900 dark:text-white mb-2">
                     {getTitle()}
                 </h2>
 
                 {/* Description */}
-                <p className="text-center text-surface-600 dark:text-gray-400 mb-6 text-sm">
+                <p className="text-center text-ink-500 dark:text-ink-400 mb-6 text-sm">
                     {getDescription()}
                 </p>
 
@@ -131,7 +131,7 @@ export function PasswordModal({
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Password Input */}
                     <div>
-                        <label className="block text-sm font-medium text-surface-700 dark:text-gray-300 mb-1.5">
+                        <label className="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-1.5">
                             Password
                         </label>
                         <input
@@ -140,13 +140,13 @@ export function PasswordModal({
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className={cn(
-                                "w-full px-4 py-3 rounded-xl border bg-white dark:bg-surface-800",
-                                "text-surface-900 dark:text-white placeholder:text-surface-400",
+                                "w-full px-4 py-3 rounded-xl border bg-white dark:bg-ink-900",
+                                "text-ink-900 dark:text-white placeholder:text-ink-400",
                                 "focus:outline-none focus:ring-2 focus:ring-primary-500/50",
                                 "transition-all duration-200",
                                 displayError
                                     ? "border-red-500 focus:border-red-500"
-                                    : "border-surface-200 dark:border-surface-700 focus:border-primary-500"
+                                    : "border-paper-300 dark:border-ink-700 focus:border-primary-500"
                             )}
                             placeholder="Enter password"
                             disabled={isLoading}
@@ -156,7 +156,7 @@ export function PasswordModal({
                     {/* Confirm Password (only for set mode) */}
                     {mode === "set" && (
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 dark:text-gray-300 mb-1.5">
+                            <label className="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-1.5">
                                 Confirm Password
                             </label>
                             <input
@@ -164,13 +164,13 @@ export function PasswordModal({
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className={cn(
-                                    "w-full px-4 py-3 rounded-xl border bg-white dark:bg-surface-800",
-                                    "text-surface-900 dark:text-white placeholder:text-surface-400",
+                                    "w-full px-4 py-3 rounded-xl border bg-white dark:bg-ink-900",
+                                    "text-ink-900 dark:text-white placeholder:text-ink-400",
                                     "focus:outline-none focus:ring-2 focus:ring-primary-500/50",
                                     "transition-all duration-200",
                                     displayError && localError.includes("match")
                                         ? "border-red-500 focus:border-red-500"
-                                        : "border-surface-200 dark:border-surface-700 focus:border-primary-500"
+                                        : "border-paper-300 dark:border-ink-700 focus:border-primary-500"
                                 )}
                                 placeholder="Confirm password"
                                 disabled={isLoading}
@@ -194,8 +194,8 @@ export function PasswordModal({
                         disabled={isLoading}
                         className={cn(
                             "w-full py-3 px-4 rounded-xl font-semibold text-white",
-                            "bg-gradient-to-r from-primary-500 to-purple-600",
-                            "hover:shadow-lg hover:shadow-primary-500/30",
+                            "bg-primary-600 hover:bg-primary-700",
+                            "shadow-soft hover:shadow-soft-md",
                             "focus:outline-none focus:ring-2 focus:ring-primary-500/50",
                             "transition-all duration-200",
                             "disabled:opacity-50 disabled:cursor-not-allowed"
@@ -223,7 +223,7 @@ export function PasswordModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="w-full py-3 px-4 rounded-xl font-medium text-surface-600 dark:text-gray-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+                            className="w-full py-3 px-4 rounded-xl font-medium text-ink-600 dark:text-ink-400 hover:bg-paper-200 dark:hover:bg-ink-700 transition-colors"
                         >
                             Cancel
                         </button>
